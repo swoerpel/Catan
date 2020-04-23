@@ -7,9 +7,7 @@ catan_params = {
     grid_height: 5,
 }
 
-
 function setup() {
-
     canvas = createCanvas(canvas_width, canvas_height);
     canvas.background('black')
     graphic = createGraphics(canvas_width, canvas_height)
