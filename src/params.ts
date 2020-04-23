@@ -1,4 +1,4 @@
-var params = {
+export var params = {
   canvas: {
     width: 2400,
     height: 2400
