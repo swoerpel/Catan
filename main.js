@@ -1,25 +1,16 @@
-pause = false;
-
-canvas_width = 2400
-canvas_height = 2400
-catan_params = {
-    grid_width: 5,
-    grid_height: 5,
-}
-
+var pause = false;
+var catan;
 function setup() {
-    canvas = createCanvas(canvas_width, canvas_height);
+    canvas = createCanvas(params.canvas.width, params.canvas.height);
     canvas.background('black')
-    graphic = createGraphics(canvas_width, canvas_height)
-    graphic.strokeWeight(0)
-    catanGame = new CatanGame(catan_params, canvas_width, canvas_height,graphic)
-    catanGame.Initialize()
+    catan = new Catan()
+    catan.Initialize();
 }
   
 function draw() {
     if(!pause){
-        catanGame.drawBoard(graphic)
-        image(graphic, 0, 0)
+        catan.board.drawBoard()
+        image(catan.graphic, 0, 0)
     }
 }
 
