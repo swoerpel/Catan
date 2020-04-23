@@ -17,14 +17,14 @@ function draw() {
 function keyPressed(keyPressed){
     console.log(keyPressed)
     if(keyPressed.key === 'Space')
-        pause = !pause
+      pause = !pause
     if(keyPressed.key === 'ArrowRight')
-        catan_params.grid_width+=1
+      params.board.width += 1;
     if(keyPressed.key === 'ArrowLeft')
-        catan_params.grid_width-=1
+      params.board.width -= 1;
     if(keyPressed.key === 'ArrowUp')
-        catan_params.grid_height+=1
+      params.board.height += 1;
     if(keyPressed.key === 'ArrowDown')
-        catan_params.grid_height-=1
+      params.board.height -= 1;
     setup();
 }
