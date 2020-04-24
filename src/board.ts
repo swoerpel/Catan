@@ -24,13 +24,16 @@ export class Board {
         this.tile_height = 2 * this.hex_radius
         this.vertical_offset = this.hex_radius / 2
         this.graphic.translate(this.tile_width / 2 + this.padding_x, this.hex_radius + this.padding_y)
-        this.color_machine = chroma.scale(['red','blue'])
+        this.color_machine = chroma.scale(params.board.color_palette)
     }
 
     public Initialize(){
         this.generate_board();
         this.apply_hex_vertices_to_tiles();
         this.generate_all_vertices();
+        this.apply_tile_resources();
+        this.apply_tile_roll_values();
+        this.apply_tile_probability();
     }
 
     private generate_board(){
@@ -42,30 +45,6 @@ export class Board {
             }
         }
         console.log(this.board)
-    }
-
-    private apply_hex_vertices_to_tiles(){
-        let adj_tile_dist = Math.ceil(this.get_distance(this.board[0].origin, this.board[1].origin)) + 1
-        for(let i = 0; i < this.board.length; i++){
-            let nearest_tiles = []
-            for(let j = 0; j < this.board.length; j++){
-                nearest_tiles.push({
-                    tile: this.board[j],
-                    distance: this.get_distance(this.board[i].origin, this.board[j].origin)
-                })
-            }
-            nearest_tiles = nearest_tiles.sort((ta,tb) => ta.distance - tb.distance)
-            nearest_tiles = nearest_tiles.filter((tile) => tile.distance != 0)
-            nearest_tiles = nearest_tiles.filter((tile) => tile.distance < adj_tile_dist)
-            this.board[i].neighbors = nearest_tiles.slice(0,6)
-        }
-    }
-
-    private generate_all_vertices(){
-        this.vertices = this.board.reduce((accumulator, tile) => [...accumulator,...tile.vertices], [])
-            .map(v => JSON.stringify(v))
-        this.vertices = Array.from(new Set(this.vertices)).map((v) => JSON.parse(v))
-        console.log(this.vertices)
     }
 
     private generate_tile(index,i,j): Tile{
@@ -98,7 +77,47 @@ export class Board {
         return tile;
     }
 
+    private apply_hex_vertices_to_tiles(){
+        let adj_tile_dist = Math.ceil(this.get_distance(this.board[0].origin, this.board[1].origin)) + 1
+        for(let i = 0; i < this.board.length; i++){
+            let nearest_tiles = []
+            for(let j = 0; j < this.board.length; j++){
+                nearest_tiles.push({
+                    tile: this.board[j],
+                    distance: this.get_distance(this.board[i].origin, this.board[j].origin)
+                })
+            }
+            nearest_tiles = nearest_tiles.sort((ta,tb) => ta.distance - tb.distance)
+            nearest_tiles = nearest_tiles.filter((tile) => tile.distance != 0)
+            nearest_tiles = nearest_tiles.filter((tile) => tile.distance < adj_tile_dist)
+            this.board[i].neighbors = nearest_tiles.slice(0,6)
+        }
+    }
 
+    private generate_all_vertices(){
+        this.vertices = this.board.reduce((accumulator, tile) => [...accumulator,...tile.vertices], [])
+            .map(v => JSON.stringify(v))
+        this.vertices = Array.from(new Set(this.vertices)).map((v) => JSON.parse(v))
+        console.log(this.vertices)
+    }
+
+
+    private apply_tile_resources(){
+        this.board.forEach((tile) => {
+
+        })  
+    }
+
+    private apply_tile_roll_values(){
+
+        this.board.forEach((tile) => {
+
+        })
+    }
+
+    private apply_tile_probability(){
+
+    }
 
     generate_hex_vertices(origin, n=6): Vertex[]{ 
         let vertices = [];

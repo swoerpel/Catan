@@ -1,5 +1,4 @@
 import { Board } from './board'
-import {params} from './params';
 
 export class Catan {
     graphic: any;

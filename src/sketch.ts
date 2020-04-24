@@ -20,6 +20,17 @@ var sketch = function (p: p5) {
         p.image(catan.graphic, 0, 0)
     }
   }
+
+  p.keyPressed = function (event: KeyboardEvent):void{
+    console.log(event)
+    switch(event.key){
+      case "ArrowRight": params.board.width++; break;
+      case "ArrowLeft": params.board.width--; break;
+      case "ArrowUp": params.board.height++; break;
+      case "ArrowDown": params.board.height--; break;
+    }
+    p.setup();
+  }
 }
 
 new p5(sketch)

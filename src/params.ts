@@ -7,6 +7,7 @@ export var params = {
   board: {
     width: 5,
     height: 5,
+    color_palette: 'RdBu'
   },
 
   player:{

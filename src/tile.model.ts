@@ -5,6 +5,8 @@ export interface Tile {
   x: number;
   y: number;
   resource_id: number;
+  roll_value: number;
+  probability: number; 
   vertices: Vertex[];
   neighbors: Tile[];
   origin: Vertex;
