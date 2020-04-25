@@ -11,10 +11,10 @@ export var params = {
   },
 
   player:{
-
+    
   },
 
   rules:{
-
+    setting: 'default'
   }
 }

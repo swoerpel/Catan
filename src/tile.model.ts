@@ -4,7 +4,8 @@ export interface Tile {
   id: number;
   x: number;
   y: number;
-  resource_id: number;
+  resource: string;
+  color_index: number;
   roll_value: number;
   probability: number; 
   vertices: Vertex[];

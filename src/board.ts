@@ -1,6 +1,7 @@
 import * as chroma from 'chroma.ts';
 import { Tile, Vertex } from './tile.model';
 import {params} from './params';
+import { Ruleset } from './ruleset.model';
 
 export class Board {
     graphic: any;
@@ -12,10 +13,12 @@ export class Board {
     tile_height: number;
     vertical_offset: number;
     color_machine: any;
+    rules: Ruleset;
     board: Tile[];
     vertices: any[];
-    constructor(graphic){
+    constructor(graphic, rules){
         this.graphic = graphic;
+        this.rules = rules;
         this.padding_x = params.canvas.width * 0.05
         this.padding_y = params.canvas.height * 0.05
         this.actual_canvas_width = params.canvas.width - 2 * this.padding_x;
@@ -44,7 +47,6 @@ export class Board {
                 this.board.push(this.generate_tile(index++,i,j))
             }
         }
-        console.log(this.board)
     }
 
     private generate_tile(index,i,j): Tile{
@@ -52,13 +54,16 @@ export class Board {
             id: index, 
             x:i, 
             y:j,
-            resource_id: Math.floor(Math.random() * 5),
+            resource: '',
+            color_index: 0,
             origin: {
                 x: i * this.tile_width + ((j % 2 != 0) ? this.tile_width / 2 : 0),
                 y: j * this.tile_height - (j) * this.hex_radius / 2,
             },
             vertices: [],
             neighbors: [],
+            roll_value: 0,
+            probability: 0,
             draw_vertices: null,
             draw_tile: null,
         }
@@ -98,21 +103,28 @@ export class Board {
         this.vertices = this.board.reduce((accumulator, tile) => [...accumulator,...tile.vertices], [])
             .map(v => JSON.stringify(v))
         this.vertices = Array.from(new Set(this.vertices)).map((v) => JSON.parse(v))
-        console.log(this.vertices)
+        console.log('unique vertices',this.vertices)
     }
 
 
     private apply_tile_resources(){
-        this.board.forEach((tile) => {
-
-        })  
+        let resources = [];
+        for(let i = 0; i < this.board.length; i++){
+            resources.push(this.rules.resources[i % this.rules.resources.length])
+        }
+        this.shuffle(resources)
+        this.board.forEach((tile, index) => {
+            tile.resource = resources[index];
+            tile.color_index = this.rules.resources.indexOf(resources[index])
+        })
+        console.log(this.board)
     }
 
     private apply_tile_roll_values(){
-
+        console.log(this.board.length, this.rules)
         this.board.forEach((tile) => {
 
-        })
+        })  
     }
 
     private apply_tile_probability(){
@@ -130,10 +142,10 @@ export class Board {
         return vertices
     }
 
-    drawBoard(){
+    drawBoard() {
         this.board.forEach((tile,index) => {
             this.graphic.stroke(this.color_machine(index / this.board.length).hex())
-            this.graphic.fill(this.color_machine(tile.resource_id / 5).hex())
+            this.graphic.fill(this.rules.colors[tile.color_index])
             tile.draw_tile();
             this.graphic.stroke('white')
             this.graphic.strokeWeight(40)
@@ -150,4 +162,11 @@ export class Board {
         return this.round(Math.sqrt(Math.pow((p2.x-p1.x),2) + Math.pow((p2.y-p1.y),2)))
     }
     
+    private shuffle(a) {
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
 }
